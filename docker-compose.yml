@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  glue_pyspark:
+    image: amazon/aws-glue-libs:glue_libs_4.0.0_image_01
+    stdin_open: true
+    tty: true
+    environment:
+      - AWS_PROFILE=${PROFILE_NAME:-default}
+      - DISABLE_SSL=true
+      - DATALAKE_FORMATS=iceberg
+    ports:
+      - 4040:4040
+      - 18080:18080
+    volumes:
+      - ~/.aws:/home/glue_user/.aws
+      - ${WORKSPACE_LOCATION:-./}:/home/glue_user/workspace/
+    command: pyspark
